@@ -1,0 +1,14 @@
+{
+  "name": "esbuild-plugin-replace",
+  "version": "1.0.0",
+  "description": "Replace plugin for esbuild",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "naecoo <ocean_zyy@yeah.net>",
+  "license": "MIT"
+}
