@@ -4,16 +4,8 @@
   "description": "Replace strings in files while bundling",
   "main": "src/index.js",
   "types": "types/index.d.ts",
-  "files": [
-    "src",
-    "types",
-    "README.md"
-  ],
-  "scripts": {
-    "test": "echo 'test'",
-    "test:ts": "tsc types/index.d.ts test/types.ts --noEmit",
-    "prepublish": "npm run test:ts && npm run test"
-  },
+  "author": "naecoo <ocean_zyy@yeah.net>",
+  "license": "MIT",
   "keywords": [
     "esbuild",
     "plugin",
@@ -21,14 +13,21 @@
     "npm",
     "module"
   ],
-  "author": "naecoo <ocean_zyy@yeah.net>",
-  "license": "MIT",
+  "files": [
+    "src",
+    "types",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/naecoo/esbuild-plugin-replace.git"
   },
   "homepage": "https://github.com/naecoo/esbuild-plugin-replace/blob/main/README.md",
   "bugs": "https://github.com/naecoo/esbuild-plugin-replace/issues",
+  "scripts": {
+    "test": "echo 'test'",
+    "test:ts": "tsc types/index.d.ts test/types.ts --noEmit"
+  },
   "dependencies": {
     "magic-string": "^0.25.7"
   },
