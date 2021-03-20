@@ -1,14 +1,39 @@
 {
   "name": "esbuild-plugin-replace",
   "version": "1.0.0",
-  "description": "Replace plugin for esbuild",
-  "main": "index.js",
-  "module": "index.esm.js",
-  "types": "index.d.ts",
+  "description": "Replace strings in files while bundling",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "src",
+    "types",
+    "README.md"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'test'",
+    "test:ts": "tsc types/index.d.ts test/types.ts --noEmit",
+    "prepublish": "npm run test:ts && npm run test"
   },
-  "keywords": [],
+  "keywords": [
+    "esbuild",
+    "plugin",
+    "replace",
+    "npm",
+    "module"
+  ],
   "author": "naecoo <ocean_zyy@yeah.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naecoo/esbuild-plugin-replace.git"
+  },
+  "homepage": "https://github.com/naecoo/esbuild-plugin-replace/blob/main/README.md",
+  "bugs": "https://github.com/naecoo/esbuild-plugin-replace/issues",
+  "dependencies": {
+    "magic-string": "^0.25.7"
+  },
+  "devDependencies": {
+    "esbuild": "^0.9.3",
+    "typescript": "^4.2.3"
+  }
 }
