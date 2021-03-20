@@ -5,7 +5,6 @@ export interface EsBuildReplaceOptions {
   [prop: string]:
     Replacement
     | EsBuildReplaceOptions['include']
-    | EsBuildReplaceOptions['exclude']
     | EsBuildReplaceOptions['values'];
 
   values?: { [prop: string]: Replacement };
