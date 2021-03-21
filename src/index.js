@@ -14,7 +14,7 @@ const mapToFunctions = (options) => {
   delete values.include;
   return Object.keys(values).reduce((fns, key) => {
     const functions = Object.assign({}, fns);
-    functions[key] = toFunction(options[key]);
+    functions[key] = toFunction(values[key]);
     return functions;
   }, {});
 }
