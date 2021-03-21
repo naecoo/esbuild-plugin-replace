@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-replace",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Replace strings in files while bundling",
   "main": "src/index.js",
   "types": "types/index.d.ts",
