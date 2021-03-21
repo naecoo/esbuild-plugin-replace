@@ -73,6 +73,4 @@ replace({
 
 
 ## Todo
-
-1. Add test cases
-2. Support `exclude` and `preventAssignment` options
+1. Support `exclude` and `preventAssignment` options
