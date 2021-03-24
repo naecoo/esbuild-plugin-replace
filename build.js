@@ -15,6 +15,7 @@ const createBuild = () => {
       bundle: true,
       minify: true,
       platform: 'node',
+      format: key
     }).then(() => {
       console.info(`— ${fileName} was built`);
     }).catch((e) => {
