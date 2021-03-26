@@ -17,6 +17,7 @@
   "files": [
     "dist",
     "types",
+    "LICENSE",
     "README.md"
   ],
   "repository": {
