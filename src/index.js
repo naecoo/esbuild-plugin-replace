@@ -54,7 +54,7 @@ exports.replace = (options = {}) => {
       build.onLoad({ filter }, async (args) => {
         const source = await fs.promises.readFile(args.path, "utf8");
         const contents = empty ? source : replaceCode(source, args.path, pattern, functionValues)
-        return { contents };
+        return { contents, loader: args.path.match(/tsx?$/) ? 'ts' : 'js' };
       });
     }
   };
