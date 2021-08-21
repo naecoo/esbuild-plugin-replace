@@ -74,3 +74,4 @@ replace({
 
 ## Todo
 1. Support `exclude` and `preventAssignment` options
+2. Add unit test
