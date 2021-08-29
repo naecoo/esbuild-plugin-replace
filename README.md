@@ -1,5 +1,5 @@
 # esbuild-plugin-replace
-🚀 A Esbuild plugin which replaces targeted strings in files while bundling.
+🚀 A Esbuild plugin which replaces targeted strings in files while bundling
 
 > This packages is based on [@rollup/plugin-replace](https://github.com/rollup/plugins/tree/master/packages/replace#readme)
 
