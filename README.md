@@ -4,7 +4,6 @@
 > This packages is based on [@rollup/plugin-replace](https://github.com/rollup/plugins/tree/master/packages/replace#readme)
 
 
-
 ## Install
 
 using npm:
