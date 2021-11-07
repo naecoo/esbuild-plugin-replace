@@ -11,4 +11,4 @@ export interface EsBuildReplaceOptions {
   include?: RegExp
 }
 
-export function replace(options?: EsBuildReplaceOptions): Plugin;  
+export function replace(options?: EsBuildReplaceOptions): Plugin;
