@@ -7,6 +7,8 @@ const toFunction = (functionOrValue) => {
   return () => functionOrValue;
 }
 
+const escape = (str) => str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+
 const longest = (a, b) => b.length - a.length;
 
 const mapToFunctions = (options) => {
