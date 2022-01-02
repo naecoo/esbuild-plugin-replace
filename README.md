@@ -40,10 +40,16 @@ The configuration above will replace every instance of `__buildVersion` with `"1
 
 In addition to the properties and values specified for replacement, users may also specify the options below.
 ### `include`
-Type: `RegExp` <br/>
-default: `/.*/` <br/>
+Type: `RegExp`
+default: `/.*/`
 
-Filters files that do not match RegExp expressions. By default all files are matched.
+Filters files that **do not match** RegExp expressions. By default all files are matched.
+
+### `exclude`
+Type: `RegExp`
+default: `null`
+
+Filters files that **do match** the `exclude` RegExp expressions. When `include` and `exclude` are set at the same time, `include` is used first, and `exclude` doesn't work.  
 
 ### `values`
 Type: `{ [key: String]: Replacement }`, where `Replacement` is either a string or a `function` that returns a string.<br/>
@@ -69,8 +75,3 @@ replace({
 });
 ```
 
-
-
-## Todo
-1. Support `exclude` and `preventAssignment` options
-2. Add unit test

@@ -54,3 +54,34 @@ test('options.values', async () => {
   expect(code).toMatch(/__author__/);
   expect(code).toMatch(/1\.0\.0/);
 });
+
+test('options.exclude-1', async () => {
+  const code = await buildExample({
+    '__author__': JSON.stringify('naecoo'),
+    exclude: /\.js$/
+  });
+  expect(code).not.toMatch(/naecoo/);
+  expect(code).toMatch(/__author__/);
+  expect(code).toMatch(/__version__/);
+});
+
+test('options.exclude-2', async () => {
+  const code = await buildExample({
+    '__author__': JSON.stringify('naecoo'),
+    exclude: /\.ts$/
+  });
+  expect(code).toMatch(/naecoo/);
+  expect(code).not.toMatch(/__author__/);
+  expect(code).toMatch(/__version__/);
+});
+
+test('options.exclude-3', async () => {
+  const code = await buildExample({
+    '__author__': JSON.stringify('naecoo'),
+    include: /\.js$/,
+    exclude: /\.js$/
+  });
+  expect(code).toMatch(/naecoo/);
+  expect(code).not.toMatch(/__author__/);
+  expect(code).toMatch(/__version__/);
+});
