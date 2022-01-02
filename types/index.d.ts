@@ -8,7 +8,8 @@ export interface EsBuildReplaceOptions {
     | EsBuildReplaceOptions['values'];
 
   values?: { [prop: string]: Replacement };
-  include?: RegExp
+  include?: RegExp;
+  exclude?: RegExp;
 }
 
 export function replace(options?: EsBuildReplaceOptions): Plugin;

@@ -22,15 +22,29 @@ const mapToFunctions = (options) => {
 }
 
 const generateFilter = (options) => {
-  let filter = /.*/;
+  let include = /.*/;
+  let exclude = null;
+  let hasValidInclude = false;
+
   if (options.include) {
     if (Object.prototype.toString.call(options.include) !== '[object RegExp]') {
       console.warn(`Options.include must be a RegExp object, but gets an '${typeof options.include}' type.`);
     } else {
-      filter = options.include
+      hasValidInclude = true;
+      include = options.include;
     }
   }
-  return filter;
+
+  if (options.exclude) {
+    if (Object.prototype.toString.call(options.exclude) !== '[object RegExp]') {
+      console.warn(`Options.exclude must be a RegExp object, but gets an '${typeof options.exclude}' type.`);
+    } else if (!hasValidInclude) {
+      // Only if `options.include` not set, take `options.exclude`
+      exclude = options.exclude;
+    }
+  }
+
+  return { include, exclude };
 }
 
 const replaceCode = (code, id, pattern, functionValues) => {
@@ -44,16 +58,22 @@ const replaceCode = (code, id, pattern, functionValues) => {
   return magicString.toString();
 }
 
+// todo: add preventAssignment option & support sourceMap
 exports.replace = (options = {}) => {
-  const filter = generateFilter(options);
+  const { include, exclude } = generateFilter(options);
   const functionValues = mapToFunctions(options);
   const empty = Object.keys(functionValues).length === 0;
   const keys = Object.keys(functionValues).sort(longest).map(escape);
   const pattern = new RegExp(`\\b(${keys.join('|')})\\b`, 'g');
+
   return {
     name: 'replace',
     setup(build) {
-      build.onLoad({ filter }, async (args) => {
+      build.onLoad({ filter: include }, async (args) => {
+        // if match exclude, skip
+        if (exclude && args.path.match(exclude)) {
+          return;
+        }
         const source = await fs.promises.readFile(args.path, "utf8");
         const contents = empty ? source : replaceCode(source, args.path, pattern, functionValues)
         return { contents, loader: args.path.match(/tsx?$/) ? 'ts' : 'js' };
