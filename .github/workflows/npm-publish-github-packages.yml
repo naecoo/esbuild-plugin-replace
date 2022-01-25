@@ -15,10 +15,13 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
-      - run: npm install yarn -g
-      - run: yarn install
-      - run: yarn run build
-      - run: yarn run test
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.22.2
+      - run: pnpm install
+      - run: pnpm run build
+      - run: pnpm run test
 
   publish-gpr:
     needs: build
