@@ -13,7 +13,10 @@ const longest = (a, b) => b.length - a.length;
 
 const mapToFunctions = (options) => {
   const values = options.values ? Object.assign({}, options.values) : Object.assign({}, options);
+  delete values.delimiters;
   delete values.include;
+  delete values.exclude;
+
   return Object.keys(values).reduce((fns, key) => {
     const functions = Object.assign({}, fns);
     functions[key] = toFunction(values[key]);
@@ -64,8 +67,10 @@ exports.replace = (options = {}) => {
   const functionValues = mapToFunctions(options);
   const empty = Object.keys(functionValues).length === 0;
   const keys = Object.keys(functionValues).sort(longest).map(escape);
-  const pattern = new RegExp(`\\b(${keys.join('|')})\\b`, 'g');
-
+  const { delimiters } = options;
+  const pattern = delimiters
+    ? new RegExp(`${escape(delimiters[0])}(${keys.join('|')})${escape(delimiters[1])}`, 'g')
+    : new RegExp(`\\b(${keys.join('|')})\\b`, 'g');
   return {
     name: 'replace',
     setup(build) {

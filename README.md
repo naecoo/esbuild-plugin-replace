@@ -39,25 +39,31 @@ The configuration above will replace every instance of `__buildVersion` with `"1
 ## Options
 
 In addition to the properties and values specified for replacement, users may also specify the options below.
+
 ### `include`
 Type: `RegExp`
+
 default: `/.*/`
 
 Filters files that **do not match** RegExp expressions. By default all files are matched.
 
+
 ### `exclude`
 Type: `RegExp`
+
 default: `null`
 
 Filters files that **do match** the `exclude` RegExp expressions. When `include` and `exclude` are set at the same time, `include` is used first, and `exclude` doesn't work.  
 
+
 ### `values`
-Type: `{ [key: String]: Replacement }`, where `Replacement` is either a string or a `function` that returns a string.<br/>
-Default: `{}`<br/>
+Type: `{ [key: String]: Replacement }`, where `Replacement` is either a string or a `function` that returns a string.
+
+Default: `{}`
 
 To avoid mixing replacement strings with the other options, you can specify replacements in the `values` option. For example, the following signature:
 
-```js
+```javascript
 replace({
   include: /\.js$/,
   changed: "replaced"
@@ -66,7 +72,7 @@ replace({
 
 Can be replaced with:
 
-```js
+```javascript
 replace({
   include: /\.js$/,
   values: {
@@ -75,3 +81,10 @@ replace({
 });
 ```
 
+
+### `delimiters`
+Type: `Array[String, String]`
+
+Default: `['\b', '\b']`
+
+Specifies the boundaries around which strings will be replaced. By default, delimiters are word boundaries. See Word [Boundaries](https://stackoverflow.com/questions/1324676/what-is-a-word-boundary-in-regex) below for more information.
