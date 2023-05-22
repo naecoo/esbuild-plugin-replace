@@ -1,3 +1,5 @@
+import { expect, test } from "vitest";
+
 const path = require('path');
 const { build } = require('esbuild');
 const { replace } = require('..');
