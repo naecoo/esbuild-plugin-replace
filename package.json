@@ -1,11 +1,11 @@
 {
   "name": "esbuild-plugin-replace",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Replace strings in files while bundling",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "types/index.d.ts",
-  "author": "naecoo <ocean_zyy@yeah.net>",
+  "author": "naecoo<ocean7hy@gmail.com>",
   "license": "MIT",
   "keywords": [
     "esbuild",
