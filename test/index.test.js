@@ -78,11 +78,19 @@ test("options.exclude-2", async () => {
 
 test("options.exclude-3", async () => {
   const code = await buildExample({
-    __author__: JSON.stringify("naecoo"),
+    __author__: JSON.stringify("222"),
     include: /\.js$/,
     exclude: /\.js$/,
   });
-  expect(code).toMatch(/naecoo/);
+  expect(code).toMatch(/222/);
   expect(code).not.toMatch(/__author__/);
   expect(code).toMatch(/__version__/);
+});
+
+test("use a key that starts with a $ ", async () => {
+  const code = await buildExample({
+    $example: JSON.stringify("Hello World!"),
+    delimiters: ['', ''],
+  });
+  expect(code).toMatch(/Hello World!/);
 });

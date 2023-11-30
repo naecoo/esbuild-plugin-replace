@@ -1,18 +1,19 @@
-
-const fs = require('fs');
-const MagicString = require('magic-string');
+import fs from "node:fs";
+import MagicString from "magic-string";
 
 const toFunction = (functionOrValue) => {
-  if (typeof functionOrValue === 'function') return functionOrValue;
+  if (typeof functionOrValue === "function") return functionOrValue;
   return () => functionOrValue;
-}
+};
 
-const escape = (str) => str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+const escape = (str) => str.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
 
 const longest = (a, b) => b.length - a.length;
 
 const mapToFunctions = (options) => {
-  const values = options.values ? Object.assign({}, options.values) : Object.assign({}, options);
+  const values = options.values
+    ? Object.assign({}, options.values)
+    : Object.assign({}, options);
   delete values.delimiters;
   delete values.include;
   delete values.exclude;
@@ -22,7 +23,7 @@ const mapToFunctions = (options) => {
     functions[key] = toFunction(values[key]);
     return functions;
   }, {});
-}
+};
 
 const generateFilter = (options) => {
   let include = /.*/;
@@ -30,8 +31,10 @@ const generateFilter = (options) => {
   let hasValidInclude = false;
 
   if (options.include) {
-    if (Object.prototype.toString.call(options.include) !== '[object RegExp]') {
-      console.warn(`Options.include must be a RegExp object, but gets an '${typeof options.include}' type.`);
+    if (Object.prototype.toString.call(options.include) !== "[object RegExp]") {
+      console.warn(
+        `Options.include must be a RegExp object, but gets an '${typeof options.include}' type.`
+      );
     } else {
       hasValidInclude = true;
       include = options.include;
@@ -39,8 +42,10 @@ const generateFilter = (options) => {
   }
 
   if (options.exclude) {
-    if (Object.prototype.toString.call(options.exclude) !== '[object RegExp]') {
-      console.warn(`Options.exclude must be a RegExp object, but gets an '${typeof options.exclude}' type.`);
+    if (Object.prototype.toString.call(options.exclude) !== "[object RegExp]") {
+      console.warn(
+        `Options.exclude must be a RegExp object, but gets an '${typeof options.exclude}' type.`
+      );
     } else if (!hasValidInclude) {
       // Only if `options.include` not set, take `options.exclude`
       exclude = options.exclude;
@@ -48,7 +53,7 @@ const generateFilter = (options) => {
   }
 
   return { include, exclude };
-}
+};
 
 const replaceCode = (code, id, pattern, functionValues) => {
   const magicString = new MagicString(code);
@@ -61,20 +66,23 @@ const replaceCode = (code, id, pattern, functionValues) => {
     magicString.overwrite(start, end, replacement);
   }
   return magicString.toString();
-}
+};
 
 // todo: add preventAssignment option & support sourceMap
-exports.replace = (options = {}) => {
+const replace = (options = {}) => {
   const { include, exclude } = generateFilter(options);
   const functionValues = mapToFunctions(options);
   const empty = Object.keys(functionValues).length === 0;
   const keys = Object.keys(functionValues).sort(longest).map(escape);
   const { delimiters } = options;
   const pattern = delimiters
-    ? new RegExp(`${escape(delimiters[0])}(${keys.join('|')})${escape(delimiters[1])}`, 'g')
-    : new RegExp(`\\b(${keys.join('|')})\\b`, 'g');
+    ? new RegExp(
+        `${escape(delimiters[0])}(${keys.join("|")})${escape(delimiters[1])}`,
+        "g"
+      )
+    : new RegExp(`\\b(${keys.join("|")})\\b`, "g");
   return {
-    name: 'replace',
+    name: "replace",
     setup(build) {
       build.onLoad({ filter: include }, async (args) => {
         // if match exclude, skip
@@ -82,10 +90,14 @@ exports.replace = (options = {}) => {
           return;
         }
         const source = await fs.promises.readFile(args.path, "utf8");
-        const contents = empty ? source : replaceCode(source, args.path, pattern, functionValues)
-        return { contents, loader: 'default' };
+        const contents = empty
+          ? source
+          : replaceCode(source, args.path, pattern, functionValues);
+        return { contents, loader: "default" };
       });
-    }
+    },
   };
-}
-module.exports = exports;
+};
+
+export { replace };
+export default replace;
