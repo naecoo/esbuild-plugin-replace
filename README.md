@@ -1,90 +1,107 @@
 # esbuild-plugin-replace
-🚀 A Esbuild plugin which replaces targeted strings in files while bundling
 
-> This package is based on [@rollup/plugin-replace](https://github.com/rollup/plugins/tree/master/packages/replace#readme)
+An esbuild plugin for replacing strings in files while bundling.
 
+> Based on [@rollup/plugin-replace](https://github.com/rollup/plugins/tree/master/packages/replace)
+
+[![CI](https://github.com/naecoo/esbuild-plugin-replace/actions/workflows/ci.yml/badge.svg)](https://github.com/naecoo/esbuild-plugin-replace/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/esbuild-plugin-replace.svg)](https://www.npmjs.com/package/esbuild-plugin-replace)
+[![license](https://img.shields.io/npm/l/esbuild-plugin-replace.svg)](https://github.com/naecoo/esbuild-plugin-replace/blob/main/LICENSE)
+
+[Documentation](https://naecoo.github.io/esbuild-plugin-replace/) | [GitHub](https://github.com/naecoo/esbuild-plugin-replace)
 
 ## Install
 
-using npm:
-```console
+```bash
 npm install esbuild-plugin-replace --save-dev
 ```
-using yarn:
-```console
-yarn add esbuild-plugin-replace -D
-```
 
-## Usage
-```js
-const { build } = require('esbuild');
-const { replace } = require('esbuild-plugin-replace');
-build({
-  // other build options
+## Quick Start
+
+```typescript
+import { build } from "esbuild";
+import { replace } from "esbuild-plugin-replace";
+
+await build({
+  entryPoints: ["src/index.js"],
+  bundle: true,
   plugins: [
     replace({
-        '__buildVersion': '"1.0.0"',
-        '__author__': `'naecoo'`
-    })
-  ]
+      __VERSION__: JSON.stringify("1.0.0"),
+      __AUTHOR__: JSON.stringify("naecoo"),
+    }),
+  ],
 });
 ```
-
-The configuration above will replace every instance of `__buildVersion` with `"1.0.0"` and `__author` with `'naecoo'`
-
-*Note: Values must be either primitives (e.g. string, number) or `function` that returns a string. For complex values, use `JSON.stringify`. To replace a target with a value that will be evaluated as a string, set the value to a quoted string (e.g. `"test"`) or use `JSON.stringify` to preprocess the target string safely.*
-
-
 
 ## Options
 
-In addition to the properties and values specified for replacement, users may also specify the options below.
+### Replacement Values
 
-### `include`
-Type: `RegExp`
+Specify replacements directly:
 
-default: `/.*/`
-
-Filters files that **do not match** RegExp expressions. By default all files are matched.
-
-
-### `exclude`
-Type: `RegExp`
-
-default: `null`
-
-Filters files that **do match** the `exclude` RegExp expressions. When `include` and `exclude` are set at the same time, `include` is used first, and `exclude` doesn't work.  
-
-
-### `values`
-Type: `{ [key: String]: Replacement }`, where `Replacement` is either a string or a `function` that returns a string.
-
-Default: `{}`
-
-To avoid mixing replacement strings with the other options, you can specify replacements in the `values` option. For example, the following signature:
-
-```javascript
+```typescript
 replace({
-  include: /\.js$/,
-  changed: "replaced"
+  __VERSION__: JSON.stringify("1.0.0"),
 });
 ```
 
-Can be replaced with:
+Or use the `values` option:
 
-```javascript
+```typescript
 replace({
-  include: /\.js$/,
   values: {
-    changed: "replaced"
-  }
+    __VERSION__: JSON.stringify("1.0.0"),
+  },
 });
 ```
 
+Values can also be functions:
 
-### `delimiters`
-Type: `Array[String, String]`
+```typescript
+replace({
+  __BUILD_TIME__: () => JSON.stringify(Date.now()),
+});
+```
 
-Default: `['\b', '\b']`
+### Filtering
 
-Specifies the boundaries around which strings will be replaced. By default, delimiters are word boundaries. See Word [Boundaries](https://stackoverflow.com/questions/1324676/what-is-a-word-boundary-in-regex) below for more information.
+- `include` - RegExp to match files to process (default: `/.*/`)
+- `exclude` - RegExp to match files to skip
+
+```typescript
+replace({
+  include: /\.js$/,
+  exclude: /node_modules/,
+  values: { __VERSION__: '"1.0.0"' },
+});
+```
+
+### Delimiters
+
+Custom delimiters for matching (default: word boundaries `\b`):
+
+```typescript
+replace({
+  delimiters: ["", ""],
+  "@/src/": "./src/",
+});
+```
+
+## TypeScript
+
+Full TypeScript support is included. Types are auto-generated.
+
+```typescript
+import { replace, ReplaceOptions } from "esbuild-plugin-replace";
+
+const options: ReplaceOptions = {
+  __VERSION__: JSON.stringify("1.0.0"),
+};
+
+replace(options);
+```
+
+## License
+
+MIT
